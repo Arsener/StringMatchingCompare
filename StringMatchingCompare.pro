@@ -17,12 +17,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     bfthread.cpp \
+    bmthread.cpp \
     kthread.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     bfthread.h \
+    bmthread.h \
     kthread.h \
     mainwindow.h
 

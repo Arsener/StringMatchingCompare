@@ -9,6 +9,7 @@
 
 #include "bfthread.h"
 #include "kthread.h"
+#include "bmthread.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,6 +31,8 @@ private slots:
     void setMatchLabel(double);
     void setTotalLabel(double);
     void setResults(QString);
+    void selectTextFile();
+    void selectPatternFile();
 
 
 private:
@@ -39,7 +42,9 @@ private:
 
     BFThread *bf;
     KThread *kmp;
+    BMThread *bm;
 
     void resetProgressBar(int n, int m);
+    void resetLabels();
 };
 #endif // MAINWINDOW_H

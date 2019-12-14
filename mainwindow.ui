@@ -37,10 +37,10 @@
    <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>100</y>
+      <x>640</x>
+      <y>150</y>
       <width>91</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -541,6 +541,42 @@
     </property>
     <property name="text">
      <string>算法</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="tSelectButton">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>50</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>选择文本T</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pSelectButton">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>100</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>选择模式P</string>
     </property>
    </widget>
   </widget>

@@ -10,7 +10,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     bf = new BFThread();
     kmp = new KThread();
+    bm = new BMThread();
 
+    connect(ui->tSelectButton, SIGNAL(clicked(bool)), this, SLOT(selectTextFile()));
+    connect(ui->pSelectButton, SIGNAL(clicked(bool)), this, SLOT(selectPatternFile()));
     connect(ui->startButton, SIGNAL(clicked(bool)), this, SLOT(startMatching()));
 
     connect(bf, SIGNAL(returnPreTime(double)), this, SLOT(setPreLabel(double)));
@@ -24,6 +27,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(kmp, SIGNAL(returnTotalTime(double)), this, SLOT(setTotalLabel(double)));
     connect(kmp, SIGNAL(returnResults(QString)), this, SLOT(setResults(QString)));
     connect(kmp, SIGNAL(returnProgress(int)), this, SLOT(setProgressBar(int)));
+
+    connect(bm, SIGNAL(returnPreTime(double)), this, SLOT(setPreLabel(double)));
+    connect(bm, SIGNAL(returnMatchTime(double)), this, SLOT(setMatchLabel(double)));
+    connect(bm, SIGNAL(returnTotalTime(double)), this, SLOT(setTotalLabel(double)));
+    connect(bm, SIGNAL(returnResults(QString)), this, SLOT(setResults(QString)));
+    connect(bm, SIGNAL(returnProgress(int)), this, SLOT(setProgressBar(int)));
 }
 
 /*
@@ -36,7 +45,18 @@ MainWindow::~MainWindow()
 {
     delete bf;
     delete kmp;
+    delete bm;
     delete ui;
+}
+
+void MainWindow::selectTextFile()
+{
+
+}
+
+void MainWindow::selectPatternFile()
+{
+
 }
 
 void MainWindow::startMatching()
@@ -46,6 +66,7 @@ void MainWindow::startMatching()
         return;
     }
 
+    resetLabels();
     p = ui->pLineEdit->text();
     t = ui->tLineEdit->text();
     int n = t.length();
@@ -72,6 +93,23 @@ void MainWindow::resetProgressBar(int n, int m)
     ui->progressBar->setValue(0);
 }
 
+void MainWindow::resetLabels(){
+    ui->bfPreLabel->clear();
+    ui->bfMatchLabel->clear();
+    ui->bfTotalLabel->clear();
+    ui->bfResultLabel->clear();
+
+    ui->kmpPreLabel->clear();
+    ui->kmpMatchLabel->clear();
+    ui->kmpTotalLabel->clear();
+    ui->kmpResultLabel->clear();
+
+    ui->bmPreLabel->clear();
+    ui->bmMatchLabel->clear();
+    ui->bmTotalLabel->clear();
+    ui->bmResultLabel->clear();
+}
+
 void MainWindow::setPreLabel(double time)
 {
     if (bfMatching){
@@ -84,6 +122,11 @@ void MainWindow::setPreLabel(double time)
         ui->processLabel->setText("KMP算法匹配");
         resetProgressBar(t.length(), 0);
     }
+    else if(bmMathcing){
+        ui->bmPreLabel->setText(QString::number(time) + "s");
+        ui->processLabel->setText("BM算法匹配");
+        resetProgressBar(t.length(), p.length());
+    }
 }
 
 void MainWindow::setMatchLabel(double time)
@@ -93,6 +136,9 @@ void MainWindow::setMatchLabel(double time)
     }
     else if(kmpMathcing){
         ui->kmpMatchLabel->setText(QString::number(time) + "s");
+    }
+    else if(bmMathcing){
+        ui->bmMatchLabel->setText(QString::number(time) + "s");
     }
 }
 
@@ -105,10 +151,16 @@ void MainWindow::setTotalLabel(double time)
     else if(kmpMathcing){
         ui->kmpTotalLabel->setText(QString::number(time) + "s");
     }
+    else if(bmMathcing){
+        ui->bmTotalLabel->setText(QString::number(time) + "s");
+    }
 }
 
 void MainWindow::setResults(QString result)
 {
+    if (result == ""){
+        result = "在文本T中未找到模式串P";
+    }
     if (bfMatching){
         ui->bfResultLabel->setText(result);
         bfMatching = false;
@@ -122,15 +174,18 @@ void MainWindow::setResults(QString result)
         ui->kmpResultLabel->setText(result);
         kmpMathcing = false;
         bmMathcing = true;
-        matching = false;
-//        resetProgressBar(p.length(), 0);
+        resetProgressBar(p.length(), 0);
         ui->processLabel->setText("BM算法预处理");
-//        kmp->setAttr(p, t);
-//        kmp->start();
+        bm->setAttr(p, t);
+        bm->start();
     }
-//    else if(bmMathcing){
-
-//    }
+    else if(bmMathcing){
+        ui->bmResultLabel->setText(result);
+        matching = false;
+        bmMathcing = false;
+        ui->processLabel->setText("完成！");
+        ui->progressBar->setValue(t.length() - p.length());
+    }
 }
 
 
