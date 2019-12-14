@@ -6,7 +6,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->progressBar->setValue(0);
 
     bf = new BFThread();
     kmp = new KThread();
@@ -20,26 +19,17 @@ MainWindow::MainWindow(QWidget *parent)
     connect(bf, SIGNAL(returnMatchTime(double)), this, SLOT(setMatchLabel(double)));
     connect(bf, SIGNAL(returnTotalTime(double)), this, SLOT(setTotalLabel(double)));
     connect(bf, SIGNAL(returnResults(QString)), this, SLOT(setResults(QString)));
-    connect(bf, SIGNAL(returnProgress(int)), this, SLOT(setProgressBar(int)));
 
     connect(kmp, SIGNAL(returnPreTime(double)), this, SLOT(setPreLabel(double)));
     connect(kmp, SIGNAL(returnMatchTime(double)), this, SLOT(setMatchLabel(double)));
     connect(kmp, SIGNAL(returnTotalTime(double)), this, SLOT(setTotalLabel(double)));
     connect(kmp, SIGNAL(returnResults(QString)), this, SLOT(setResults(QString)));
-    connect(kmp, SIGNAL(returnProgress(int)), this, SLOT(setProgressBar(int)));
 
     connect(bm, SIGNAL(returnPreTime(double)), this, SLOT(setPreLabel(double)));
     connect(bm, SIGNAL(returnMatchTime(double)), this, SLOT(setMatchLabel(double)));
     connect(bm, SIGNAL(returnTotalTime(double)), this, SLOT(setTotalLabel(double)));
     connect(bm, SIGNAL(returnResults(QString)), this, SLOT(setResults(QString)));
-    connect(bm, SIGNAL(returnProgress(int)), this, SLOT(setProgressBar(int)));
 }
-
-/*
-ababababddababdababababddababababababddabababaddabadddbabaababbabaababababddababddababababbbabaababababddababababddababc
-ababababdd
-0 15 29 66 95 105 120
-*/
 
 MainWindow::~MainWindow()
 {
@@ -51,46 +41,87 @@ MainWindow::~MainWindow()
 
 void MainWindow::selectTextFile()
 {
-
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select Text File"), filePath, tr("Allfile(*.*);;txtfile(*.txt)"));
+    if (fileName != "")
+        ui->tLineEdit->setText(fileName);
+    filePath = fileName.mid(0, fileName.lastIndexOf('/'));
 }
 
 void MainWindow::selectPatternFile()
 {
-
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select Text File"), filePath, tr("Allfile(*.*);;txtfile(*.txt)"));
+    if (fileName != "")
+        ui->pLineEdit->setText(fileName);
+    filePath = fileName.mid(0, fileName.lastIndexOf('/'));
 }
 
 void MainWindow::startMatching()
 {
+    t = "";
+    p = "";
     if (matching){
         QMessageBox::warning(this, "Error!", "Matching!");
         return;
     }
 
     resetLabels();
-    p = ui->pLineEdit->text();
-    t = ui->tLineEdit->text();
+
+    QFile ft(ui->tLineEdit->text());
+    if (!ft.open(QIODevice::ReadOnly|QIODevice::Text))//打开指定文件
+    {
+        QMessageBox::warning(this, "Error!", "未找到指定文本T文件！");
+        return;
+    }
+
+    QTextStream txtInputT(&ft);
+    while (!txtInputT.atEnd())
+        t += txtInputT.readLine();
+    ft.close();
+
+    QFile fp(ui->pLineEdit->text());
+    if (!fp.open(QIODevice::ReadOnly|QIODevice::Text))//打开指定文件
+    {
+        QMessageBox::warning(this, "Error!", "未找到指定模式P文件！");
+        return;
+    }
+
+    QTextStream txtInputP(&fp);
+    while (!txtInputP.atEnd())
+        p += txtInputP.readLine();
+    fp.close();
+
+
+    if (!fp.open(QIODevice::ReadOnly|QIODevice::Text))//打开指定文件
+    {
+        QMessageBox::warning(this, "Error!", "未找到指定模式P文件！");
+        return;
+    }
+
     int n = t.length();
     int m = p.length();
+
     ui->tLengthLabel->setText(QString::number(n));
     ui->pLengthLabel->setText(QString::number(m));
-    resetProgressBar(n, m);
+
+    if (n == 0){
+        QMessageBox::warning(this, "Error!", "文本T不能为空字符串！");
+        return;
+    }
+
+    if (m == 0){
+        QMessageBox::warning(this, "Error!", "模式P不能为空字符串！");
+        return;
+    }
+
+    if (n < m){
+        QMessageBox::warning(this, "Error!", "文本T长度小于模式P长度！");
+        return;
+    }
+
     bfMatching = true;
     matching = true;
-    ui->processLabel->setText("BF算法预处理");
     bf->setAttr(p, t);
     bf->start();
-}
-
-void MainWindow::setProgressBar(int p)
-{
-    ui->progressBar->setValue(p);
-}
-
-void MainWindow::resetProgressBar(int n, int m)
-{
-
-    ui->progressBar->setRange(0, n - m);
-    ui->progressBar->setValue(0);
 }
 
 void MainWindow::resetLabels(){
@@ -114,18 +145,12 @@ void MainWindow::setPreLabel(double time)
 {
     if (bfMatching){
         ui->bfPreLabel->setText(QString::number(time) + "s");
-        ui->processLabel->setText("BF算法匹配");
-        resetProgressBar(t.length(), p.length());
     }
     else if(kmpMathcing){
         ui->kmpPreLabel->setText(QString::number(time) + "s");
-        ui->processLabel->setText("KMP算法匹配");
-        resetProgressBar(t.length(), 0);
     }
     else if(bmMathcing){
         ui->bmPreLabel->setText(QString::number(time) + "s");
-        ui->processLabel->setText("BM算法匹配");
-        resetProgressBar(t.length(), p.length());
     }
 }
 
@@ -161,12 +186,11 @@ void MainWindow::setResults(QString result)
     if (result == ""){
         result = "在文本T中未找到模式串P";
     }
+
     if (bfMatching){
         ui->bfResultLabel->setText(result);
         bfMatching = false;
         kmpMathcing = true;
-        resetProgressBar(p.length(), 0);
-        ui->processLabel->setText(" KMP算法预处理");
         kmp->setAttr(p, t);
         kmp->start();
     }
@@ -174,8 +198,6 @@ void MainWindow::setResults(QString result)
         ui->kmpResultLabel->setText(result);
         kmpMathcing = false;
         bmMathcing = true;
-        resetProgressBar(p.length(), 0);
-        ui->processLabel->setText("BM算法预处理");
         bm->setAttr(p, t);
         bm->start();
     }
@@ -183,8 +205,6 @@ void MainWindow::setResults(QString result)
         ui->bmResultLabel->setText(result);
         matching = false;
         bmMathcing = false;
-        ui->processLabel->setText("完成！");
-        ui->progressBar->setValue(t.length() - p.length());
     }
 }
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>100</y>
+      <y>130</y>
       <width>581</width>
       <height>31</height>
      </rect>
@@ -38,7 +38,7 @@
     <property name="geometry">
      <rect>
       <x>640</x>
-      <y>150</y>
+      <y>180</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -327,65 +327,11 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_7">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>410</y>
-      <width>111</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>当前正在进行：</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="processLabel">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>410</y>
-      <width>391</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QProgressBar" name="progressBar">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>460</y>
-      <width>431</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="value">
-     <number>24</number>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>150</y>
+      <y>180</y>
       <width>91</width>
       <height>41</height>
      </rect>
@@ -403,7 +349,7 @@
     <property name="geometry">
      <rect>
       <x>280</x>
-      <y>150</y>
+      <y>180</y>
       <width>91</width>
       <height>41</height>
      </rect>
@@ -493,7 +439,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>150</y>
+      <y>180</y>
       <width>91</width>
       <height>41</height>
      </rect>
@@ -511,7 +457,7 @@
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>150</y>
+      <y>180</y>
       <width>91</width>
       <height>41</height>
      </rect>
@@ -565,7 +511,7 @@
     <property name="geometry">
      <rect>
       <x>640</x>
-      <y>100</y>
+      <y>130</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -577,6 +523,42 @@
     </property>
     <property name="text">
      <string>选择模式P</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_12">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>10</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>文本T文件：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>90</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>模式P文件：</string>
     </property>
    </widget>
   </widget>

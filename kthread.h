@@ -22,7 +22,6 @@ signals:
     void returnPreTime(double);
     void returnMatchTime(double);
     void returnTotalTime(double);
-    void returnProgress(int);
     void returnResults(QString);
 
 protected:
@@ -30,7 +29,7 @@ protected:
 
 private:
     QString t, p;
-    int pre[1000005];
+    int pre[2000005];
     void computePrefixFunction(int m);
 };
 

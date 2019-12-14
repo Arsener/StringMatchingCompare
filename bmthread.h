@@ -22,7 +22,6 @@ signals:
     void returnPreTime(double);
     void returnMatchTime(double);
     void returnTotalTime(double);
-    void returnProgress(int);
     void returnResults(QString);
 
 protected:
@@ -31,8 +30,8 @@ protected:
 private:
     QString t, p;
     int bmBc[150];
-    int Osuff[1000005];
-    int bmGs[1000005];
+    int Osuff[2000005];
+    int bmGs[2000005];
     void computeBMBC(int m);
     void computeBMGS(int m);
     void computeOsuff(int m);

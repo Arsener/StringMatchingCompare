@@ -23,7 +23,6 @@ void BMThread::computeBMBC(int m)
     }
     for (int i = 0; i < p.length() - 1; i++){
         bmBc[int(QChar(p[i]).toLatin1())] = m - i - 1;
-        returnProgress(i);
     }
 }
 
@@ -105,7 +104,6 @@ void BMThread::run()
             move = bmGs[i];
         }
         s += move;
-        returnProgress(s);
     }
 
     end = system_clock::now();

@@ -6,6 +6,9 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
 
 #include "bfthread.h"
 #include "kthread.h"
@@ -26,7 +29,6 @@ public:
 
 private slots:
     void startMatching();
-    void setProgressBar(int);
     void setPreLabel(double);
     void setMatchLabel(double);
     void setTotalLabel(double);
@@ -38,13 +40,13 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QString p, t;
+    QString filePath = "C:/";
     bool bfMatching = false, kmpMathcing = false, bmMathcing = false, matching = false;
 
     BFThread *bf;
     KThread *kmp;
     BMThread *bm;
 
-    void resetProgressBar(int n, int m);
     void resetLabels();
 };
 #endif // MAINWINDOW_H

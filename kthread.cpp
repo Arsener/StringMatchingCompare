@@ -26,7 +26,6 @@ void KThread::computePrefixFunction(int m)
         if (p[k + 1] == p[i])
             k += 1;
         pre[i] = k;
-        emit returnProgress(i);
     }
 }
 
@@ -59,7 +58,6 @@ void KThread::run()
             result += QString::number(i - m);
             q = pre[q];
         }
-        emit returnProgress(i);
     }
     end = system_clock::now();
     duration = duration_cast<microseconds>(end - start);

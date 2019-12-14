@@ -22,7 +22,6 @@ signals:
     void returnPreTime(double);
     void returnMatchTime(double);
     void returnTotalTime(double);
-    void returnProgress(int);
     void returnResults(QString);
 
 protected:

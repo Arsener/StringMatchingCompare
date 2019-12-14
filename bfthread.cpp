@@ -27,7 +27,6 @@ void BFThread::run()
     auto start = system_clock::now();
     QString result = "";
     for (int s = 0; s <= n - m; s++){
-        emit returnProgress(s);
         bool flag = true;
         for (int i = 0; i < m; i++){
             if (p[i] != t[s + i]){
